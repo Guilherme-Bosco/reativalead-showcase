@@ -11,7 +11,7 @@
 
 ## O problema
 
-Imobiliárias brasileiras investem entre **R$ 2.000 e R$ 5.000 por mês** em tráfego pago (Meta Ads, Imoblead) e geram centenas de leads por mês. Mas a maior parte dessa base **nunca é recontactada**.
+Imobiliárias brasileiras investem entre **R$ 2.000 e R$ 5.000 por mês** em tráfego pago (Meta Ads, Google ADS, CRM) e geram centenas de leads por mês. Mas a maior parte dessa base **nunca é recontactada**.
 
 O motivo é estrutural, não falta de vontade:
 
