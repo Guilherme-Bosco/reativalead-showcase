@@ -194,14 +194,14 @@ Primeira campanha de escala real (~1.800 leads da base da corretora piloto), em 
 
 ## Stack
 
-**Frontend** Next.js 16 · TypeScript · Tailwind CSS · shadcn/ui
-**Backend** n8n 2.17.7 (self-hosted, Docker Swarm) · Edge Functions (Supabase)
-**Banco** PostgreSQL (Supabase) com RLS nativo · 8 tabelas principais · índice único parcial em `(user_id, telefone)` para merge-duplicates
-**Cache / Fila** Redis 7.4 Alpine
-**Mensageria** Evolution API v2 (Baileys) · migração pra Zapster planejada
-**IA** GPT-4o-mini (OpenAI) para o agente conversacional do Chatwoot pós-resposta
-**Auth** Supabase Auth · JWT · RLS por `auth.uid()`
-**Hosting** Vercel (frontend) · VPS dedicada (n8n + Redis + Evolution API)
+- **Frontend** — Next.js 16 · TypeScript · Tailwind CSS · shadcn/ui
+- **Backend** — n8n 2.17.7 (self-hosted, Docker Swarm) · Edge Functions (Supabase)
+- **Banco** — PostgreSQL (Supabase) com RLS nativo · 8 tabelas principais · índice único parcial em `(user_id, telefone)` para merge-duplicates
+- **Cache / Fila** — Redis 7.4 Alpine
+- **Mensageria** — Evolution API v2 (Baileys) · migração pra Zapster planejada
+- **IA** — GPT-4o-mini (OpenAI) para o agente conversacional do Chatwoot pós-resposta
+- **Auth** — Supabase Auth · JWT · RLS por `auth.uid()`
+- **Hosting** — Vercel (frontend) · VPS dedicada (n8n + Redis + Evolution API)
 
 ---
 
