@@ -1,213 +1,213 @@
 # ReativaLead
 
-> **Plataforma de prospecção ativa e disparo em massa via WhatsApp.**
-> Construído para times comerciais que investem em tráfego pago e perdem a maior parte dos leads gerados por falta de follow-up consistente. Foco inicial de go-to-market no mercado imobiliário, com arquitetura genérica que serve qualquer setor que precise reativar base de leads em escala.
+> **Outbound prospecting and mass-dispatch platform via WhatsApp.**
+> Built for sales teams that invest in paid ads and lose most of the leads they generate for lack of consistent follow-up. Initial go-to-market focus on real estate, with a generic architecture that fits any sector that needs to reactivate a lead base at scale.
 
-![Status](https://img.shields.io/badge/status-em%20produ%C3%A7%C3%A3o-success) ![Stack](https://img.shields.io/badge/stack-Next.js%20%C2%B7%20Supabase%20%C2%B7%20n8n-1f2937) ![Taxa de resposta](https://img.shields.io/badge/taxa%20de%20resposta-20%25-brightgreen)
+![Status](https://img.shields.io/badge/status-in%20production-success) ![Stack](https://img.shields.io/badge/stack-Next.js%20%C2%B7%20Supabase%20%C2%B7%20n8n-1f2937) ![Response rate](https://img.shields.io/badge/response%20rate-20%25-brightgreen)
 
-> 📌 Este repositório é um case study técnico do ReativaLead. O código-fonte do produto é fechado. Aqui você encontra a arquitetura, decisões técnicas e estado atual do projeto.
-
----
-
-## O problema
-
-Empresas que investem em tráfego pago perdem a maior parte dos leads gerados por incapacidade operacional de fazer follow-up consistente em escala.
-
-O caso mais visível é o de pequenas imobiliárias que gastam de R$ 2.000 a R$ 5.000 por mês em Meta Ads ou Imoblead, geram 200 a 500 leads por mês, e nunca recontactam a maior parte dessa base. Mas o mesmo padrão aparece em qualquer setor que dependa de captura por anúncio: clínica, academia, curso, serviço.
-
-O motivo é estrutural, não falta de vontade:
-
-- **Volume.** Um operador com 500 leads na planilha não tem como ligar pra todos, muito menos fazer 4 toques de follow-up em cada.
-- **Consistência.** Follow-up manual depende de disciplina. O time prioriza leads novos e a base antiga vira cemitério.
-- **Personalização em escala.** Copiar e colar mensagem personalizada pra 300 leads no WhatsApp é inviável: demora horas e é propenso a erro.
-
-Resultado: a maior parte do investimento em tráfego é desperdiçada porque o lead não recebe nem a primeira mensagem de retomada.
-
-## A solução
-
-O ReativaLead automatiza o reaquecimento dessa base parada e a qualificação inicial via WhatsApp, devolvendo ao time comercial **apenas os leads que demonstraram interesse**.
-
-### Funcionalidades principais
-
-- **Importação inteligente de planilha.** Upload de CSV/XLSX com auto-detecção de cabeçalho, mapeamento flexível de colunas, normalização de telefone e merge de duplicatas.
-- **Campanha com rodízio de templates.** 3 mensagens por tipo alternando automaticamente entre leads, com verificação prévia no WhatsApp antes do envio.
-- **Follow-up automático de 4 toques.** Sistema avança o lead por 4 etapas (3, 5, 7, 7 dias) sem intervenção. Cada etapa tem templates próprios.
-- **CRM inline editável.** Status, etapa, prioridade e observações editáveis direto na tabela, sem abrir formulários.
-- **Dashboard com métricas em tempo real.** Funil de conversão, taxa de resposta por etapa de follow-up, controle de limites diários e mensais.
-
-### Fluxo do operador
-
-1. Login no dashboard
-2. Importa planilha de leads (drag-and-drop, mapeia colunas, confirma)
-3. Cadastra templates de mensagem (3 por tipo)
-4. Cria campanha aplicando filtros, vê prévia, confirma disparo
-5. Sistema executa com delay aleatório (12 a 25 segundos entre envios)
-6. Follow-ups disparam nos dias seguintes sem ação manual
-7. Operador trata **apenas os leads que responderam**
-
-### Fluxo do lead
-
-Recebe mensagem personalizada no WhatsApp. Silêncio aciona follow-up 1 após 3 dias. Silêncio aciona follow-up 2 após 5 dias. Mais 2 toques de 7 dias. Se ainda em silêncio depois disso, fica marcado como finalizado. Resposta em qualquer etapa interrompe o ciclo e notifica o operador.
+> 📌 This repository is a technical case study of ReativaLead. The product's source code is closed. Here you'll find the architecture, technical decisions, and the current state of the project.
 
 ---
 
-## Arquitetura
+## The Problem
+
+Companies that invest in paid ads lose most of the leads they generate because they lack the operational capacity to follow up consistently at scale.
+
+The most visible case is small real estate brokerages that spend R$2,000 to R$5,000 a month on Meta Ads or Imoblead, generate 200 to 500 leads a month, and never re-contact most of that base. But the same pattern shows up in any sector that depends on ad capture: clinics, gyms, courses, services.
+
+The reason is structural, not a lack of will:
+
+- **Volume.** An operator with 500 leads in a spreadsheet can't call all of them, let alone make 4 follow-up touches on each one.
+- **Consistency.** Manual follow-up depends on discipline. The team prioritizes new leads and the old base becomes a graveyard.
+- **Personalization at scale.** Copying and pasting a personalized message for 300 leads on WhatsApp is unfeasible: it takes hours and is error-prone.
+
+The result: most of the ad investment is wasted because the lead never even receives the first re-engagement message.
+
+## The Solution
+
+ReativaLead automates the re-warming of that dormant base and the initial qualification over WhatsApp, handing the sales team **only the leads that showed interest**.
+
+### Main features
+
+- **Smart spreadsheet import.** CSV/XLSX upload with header auto-detection, flexible column mapping, phone normalization, and duplicate merging.
+- **Campaign with template rotation.** 3 messages per type, alternating automatically across leads, with a pre-send WhatsApp check before sending.
+- **Automatic 4-touch follow-up.** The system moves the lead through 4 stages (3, 5, 7, 7 days) with no intervention. Each stage has its own templates.
+- **Editable inline CRM.** Status, stage, priority, and notes editable straight from the table, without opening forms.
+- **Dashboard with real-time metrics.** Conversion funnel, response rate per follow-up stage, daily and monthly limit control.
+
+### Operator flow
+
+1. Log into the dashboard
+2. Import the lead spreadsheet (drag-and-drop, map columns, confirm)
+3. Register message templates (3 per type)
+4. Create a campaign applying filters, preview it, confirm the dispatch
+5. The system runs it with a random delay (12 to 25 seconds between sends)
+6. Follow-ups fire on the following days with no manual action
+7. The operator handles **only the leads that replied**
+
+### Lead flow
+
+The lead receives a personalized message on WhatsApp. Silence triggers follow-up 1 after 3 days. Silence triggers follow-up 2 after 5 days. Then 2 more 7-day touches. If still silent after that, the lead is marked as finished. A reply at any stage breaks the cycle and notifies the operator.
+
+---
+
+## Architecture
 
 ```mermaid
 flowchart TB
     Dashboard["Dashboard<br/>Next.js + Vercel"]
 
     subgraph n8n["n8n self-hosted, 5 workflows"]
-        WF0["WF0 Importação"]
-        WF1["WF1 Agente de Campanhas"]
-        WF2["WF2 Despachante de Disparos"]
-        WF3["WF3 Resposta do Lead"]
-        WFFollow["WF Follow-up<br/>Cron diário 10h, 92 nodes"]
+        WF0["WF0 Import"]
+        WF1["WF1 Campaign Agent"]
+        WF2["WF2 Dispatch Worker"]
+        WF3["WF3 Lead Reply"]
+        WFFollow["WF Follow-up<br/>Daily cron 10am, 92 nodes"]
     end
 
     Supabase[("Supabase<br/>PostgreSQL + RLS")]
-    Redis[("Redis<br/>Fila de campanha")]
-    Evo["Evolution API<br/>WhatsApp"]
+    Redis[("Redis<br/>Campaign queue")]
+    Evo["WAHA<br/>WhatsApp"]
 
-    Dashboard -->|upload planilha| WF0
-    Dashboard -->|criar campanha| WF1
+    Dashboard -->|spreadsheet upload| WF0
+    Dashboard -->|create campaign| WF1
     WF0 --> Supabase
 
     WF1 --> Supabase
-    WF1 -->|salva fila| Redis
+    WF1 -->|save queue| Redis
     WF1 --> WF2
 
-    WF2 -->|lê fila| Redis
-    WF2 -->|busca leads| Supabase
-    WF2 -->|envia| Evo
-    WF2 -->|atualiza status| Supabase
+    WF2 -->|read queue| Redis
+    WF2 -->|fetch leads| Supabase
+    WF2 -->|send| Evo
+    WF2 -->|update status| Supabase
 
-    Evo -->|webhook resposta| WF3
-    WF3 -->|atualiza lead| Supabase
+    Evo -->|reply webhook| WF3
+    WF3 -->|update lead| Supabase
 
-    WFFollow -->|busca elegíveis| Supabase
-    WFFollow -->|envia| Evo
-    WFFollow -->|avança etapa| Supabase
+    WFFollow -->|fetch eligible| Supabase
+    WFFollow -->|send| Evo
+    WFFollow -->|advance stage| Supabase
 ```
 
-### Camadas
+### Layers
 
-| Camada | Tecnologia | Responsabilidade |
+| Layer | Technology | Responsibility |
 |---|---|---|
-| Frontend | Next.js 16, TypeScript, Tailwind, shadcn/ui | Dashboard, CRM, campanhas, templates |
-| Autenticação | Supabase Auth | Login, JWT, base do RLS |
-| Banco | Supabase (PostgreSQL) | Leads, campanhas, templates, contadores |
-| Automação | n8n self-hosted em Docker Swarm | 5 workflows orquestrando o backend |
-| Fila | Redis | Fila de disparo por campanha |
-| Mensageria | Evolution API v2 (MVP) | Envio, verificação de número, webhook de resposta |
-| Deploy | Vercel (front) e VPS (backend) | Separação clara front/back |
+| Frontend | Next.js 16, TypeScript, Tailwind, shadcn/ui | Dashboard, CRM, campaigns, templates |
+| Authentication | Supabase Auth | Login, JWT, foundation for RLS |
+| Database | Supabase (PostgreSQL) | Leads, campaigns, templates, counters |
+| Automation | n8n self-hosted on Docker Swarm | 5 workflows orchestrating the backend |
+| Queue | Redis | Per-campaign dispatch queue |
+| Messaging | WAHA (WhatsApp HTTP API) | Sending, number verification, reply webhook |
+| Deploy | Vercel (front) and VPS (backend) | Clear front/back separation |
 
 ### Multi-tenancy
 
-Isolamento por **Row-Level Security (RLS) nativa do PostgreSQL**. Cada tabela tem policy `user_id = auth.uid()`, então um cliente nunca enxerga dado de outro, mesmo se a aplicação tiver bug. Redis usa chaves prefixadas por `user_id` (`disparo:{user_id}:fila`). Onboarding de novo cliente leva ~15 minutos via dashboard admin.
+Isolation through **PostgreSQL's native Row-Level Security (RLS)**. Every table has a `user_id = auth.uid()` policy, so one client never sees another's data, even if the application has a bug. Redis uses keys prefixed by `user_id` (`disparo:{user_id}:fila`). Onboarding a new client takes ~15 minutes through the admin dashboard.
 
 ---
 
-## Decisões técnicas
+## Technical decisions
 
-Algumas escolhas valeram debate antes de virar código.
+Some choices were worth debating before they became code.
 
-### 1. n8n self-hosted em vez de serverless functions
+### 1. n8n self-hosted instead of serverless functions
 
-**Decisão.** Toda a lógica de backend roda em workflows n8n self-hosted (Docker Swarm), não em Lambda, Edge Functions ou API server tradicional.
+**Decision.** All backend logic runs in self-hosted n8n workflows (Docker Swarm), not in Lambda, Edge Functions, or a traditional API server.
 
-**Por quê.** O fluxo de follow-up tem 92 nodes em 5 ramos paralelos. Gerenciar essa complexidade em código serverless seria impraticável. Qualquer mudança exigiria deploy completo e debug remoto. Em n8n, o fluxo é visual, debugável node a node, e cada execução fica registrada em histórico.
+**Why.** The follow-up flow has 92 nodes across 5 parallel branches. Managing that complexity in serverless code would be impractical. Any change would require a full deploy and remote debugging. In n8n, the flow is visual, debuggable node by node, and every execution is recorded in the history.
 
-**Trade-off.** Precisa manter servidor de pé, com o custo e a manutenção que vem junto. Em troca, ganho velocidade de iteração absurda. Uma mudança no follow-up que levaria meio dia em código leva 15 minutos no n8n.
+**Trade-off.** I have to keep a server up, with the cost and maintenance that come with it. In exchange, I get absurd iteration speed. A follow-up change that would take half a day in code takes 15 minutes in n8n.
 
-### 2. Evolution API self-hosted (MVP) em vez de WhatsApp Business API oficial
+### 2. WAHA self-hosted as the default, official WhatsApp Business API as a future premium option
 
-**Decisão.** Mensageria via Evolution API (Baileys, WhatsApp Web) em VPS própria, não via BSP comercial (Meta Cloud API, Zapster).
+**Decision.** Messaging via WAHA (a self-hosted WhatsApp HTTP API) on my own VPS, not via the official WhatsApp Business API / a commercial BSP.
 
-**Por quê.** Custo. API oficial cobra R$ 0,15 a R$ 0,80 por mensagem. Em campanha de 1.000 leads com 4 toques de follow-up, isso já vira R$ 600 a R$ 3.200. Inviável pro ticket-médio do cliente-alvo no MVP.
+**Why.** Cost. The official API charges R$0.15 to R$0.80 per message. In a campaign of 1,000 leads with 4 follow-up touches, that already adds up to R$600 to R$3,200. Unfeasible for the target client's average ticket in the MVP.
 
-**Trade-off.** Maior risco de banimento, menor estabilidade, sem selo verificado. Decisão consciente para MVP. Migração para Zapster (BSP comercial) já planejada quando receita justificar.
+**Trade-off.** Higher ban risk, lower stability, no verified badge — a conscious trade-off. The official WhatsApp Business API is planned as a future option that will coexist with WAHA across different plans (WAHA on entry plans, the official API on premium plans).
 
-### 3. Redis como fila em vez de BullMQ ou SQS
+### 3. Redis as a queue instead of BullMQ or SQS
 
-**Decisão.** Fila de campanha em chaves Redis simples (`LPUSH`, `RPOP`), sem worker dedicado.
+**Decision.** The campaign queue lives in simple Redis keys (`LPUSH`, `RPOP`), with no dedicated worker.
 
-**Por quê.** O próprio n8n é o consumer. Ele lê o Redis dentro do workflow. Adicionar BullMQ exigiria um worker Node.js separado só pra rodar a fila, dobrando a superfície de manutenção pra ganho marginal.
+**Why.** n8n itself is the consumer. It reads Redis inside the workflow. Adding BullMQ would require a separate Node.js worker just to run the queue, doubling the maintenance surface for marginal gain.
 
-**Trade-off.** Sem retry automático, sem dead-letter queue. Aceito para o volume atual (abaixo de 1.000 leads por campanha). Se a operação passar disso, troca pra BullMQ.
+**Trade-off.** No automatic retry, no dead-letter queue. Accepted for the current volume (under 1,000 leads per campaign). If the operation grows past that, I'll switch to BullMQ.
 
-### 4. Rodízio de templates por hash de UUID em vez de round-robin com estado
+### 4. Template rotation by UUID hash instead of stateful round-robin
 
-**Decisão.** Para distribuir os 3 templates entre N leads, usa o último caractere do UUID do lead como seed (`hex % 3`).
+**Decision.** To distribute the 3 templates across N leads, it uses the last character of the lead's UUID as a seed (`hex % 3`).
 
-**Por quê.** Stateless. Não precisa de contador global, não precisa de lock, não há race condition. Cada lead recebe seu template determinístico baseado no próprio UUID.
+**Why.** Stateless. No global counter needed, no lock, no race condition. Each lead gets its deterministic template based on its own UUID.
 
-**Trade-off.** A distribuição não é exatamente 33/33/33. A aleatoriedade dos UUIDs gera variação de poucos pontos. Aceito.
+**Trade-off.** The distribution isn't exactly 33/33/33. The randomness of UUIDs produces a variation of a few points. Accepted.
 
 ---
 
-## Estado atual
+## Current state
 
-**Em produção, com 2 pilotos ativos há ~2 meses.** Primeira cliente piloto, corretora em Pelotas-RS (~1.800 leads na base), e uso interno da própria Mind in Shift para prospecção comercial da agência.
+**In production, with 2 active pilots for ~2 months.** First pilot client, a real estate brokerage in Pelotas-RS (~1,800 leads in the base), plus internal use by Mind in Shift itself for the agency's own sales prospecting.
 
-Números acumulados no período:
+Cumulative numbers over the period:
 
-| Métrica | Valor |
+| Metric | Value |
 |---|---|
-| Disparos iniciais executados | **400** |
-| Respostas recebidas | **80** (taxa de **20%**) |
-| Leads em fase final de qualificação para assinatura | **2** |
-| Clientes em produção | 2 |
+| Initial dispatches executed | **400** |
+| Replies received | **80** (a **20%** rate) |
+| Leads in the final qualification stage before signing | **2** |
+| Clients in production | 2 |
 
-A taxa de resposta de **20% está acima do benchmark típico de cold outreach via WhatsApp** (geralmente 5 a 10%), o que valida o efeito combinado de rodízio de templates, personalização por variável e verificação prévia de número.
+The **20% response rate is above the typical benchmark for cold outreach over WhatsApp** (usually 5 to 10%), which validates the combined effect of template rotation, per-variable personalization, and pre-send number verification.
 
-### Capacidade técnica
+### Technical capacity
 
-- ~200 mensagens por hora por instância
-- ~2.200 por dia em janela comercial
-- Limites de plano (100, 300 ou 500 por dia) são intencionalmente inferiores à capacidade técnica, como margem de segurança contra banimento
+- ~200 messages per hour per instance
+- ~2,200 per day within business hours
+- Plan limits (100, 300, or 500 per day) are intentionally below the technical capacity, as a safety margin against bans
 
-### Próxima validação
+### Next validation
 
-Primeira campanha de escala real (~1.800 leads da base da corretora piloto), em curso. O objetivo é medir a taxa de resposta no volume maior e validar a estabilidade da Evolution API nesse patamar. Único gap relevante entre o estado atual e a operação em escala.
-
----
-
-## Limitações conhecidas
-
-- **Sem entrada automática de leads.** Para o foco inicial em imobiliária, os CRMs do setor (Imoblead e similares) não oferecem API aberta. Entrada via upload manual de planilha. Para outros setores, a integração depende da disponibilidade de API do CRM ou plataforma de captura específica. Webhook de integração planejado quando viável.
-- **Volume acima de 5.000 leads por campanha.** O `SplitInBatches` do n8n processa sequencialmente. Campanhas desse porte podem levar mais de 24 horas. Próximo passo: paralelização com múltiplas instâncias.
-- **Observabilidade limitada.** Sem APM dedicado (Sentry, Datadog). Detecção de erros via logs do n8n e Supabase. Aceitável no volume atual, planejado pra escala.
-- **Internacionalização.** Normalização de telefone assume formato brasileiro (DDD 2 dígitos + 9 dígitos). Adaptação necessária pra outros mercados.
+The first real-scale campaign (~1,800 leads from the pilot brokerage's base) is underway. The goal is to measure the response rate at higher volume and validate WAHA's stability at that level. It's the only relevant gap between the current state and operation at scale.
 
 ---
 
-## Roadmap (próximos 3 a 6 meses)
+## Known limitations
 
-- Primeira campanha de escala (1.800+ leads) com métricas reais de taxa de resposta
-- Migração de Evolution API para Zapster (BSP comercial, maior estabilidade, menor risco de banimento)
-- Landing page do produto e funil de aquisição
-- 5 a 10 clientes pagantes
-- Notificação em tempo real para o operador quando lead responde
-- Integração com webhooks de CRMs e plataformas de captura (Imoblead como prioridade pelo foco inicial em imobiliária)
+- **No automatic lead intake.** For the initial real estate focus, the sector's CRMs (Imoblead and similar) don't offer an open API. Intake happens via manual spreadsheet upload. For other sectors, the integration depends on the availability of the CRM's or capture platform's API. An integration webhook is planned when feasible.
+- **Volume above 5,000 leads per campaign.** n8n's `SplitInBatches` processes sequentially. Campaigns of that size can take more than 24 hours. Next step: parallelization with multiple instances.
+- **Limited observability.** No dedicated APM (Sentry, Datadog). Error detection via n8n and Supabase logs. Acceptable at the current volume, planned for scale.
+- **Internationalization.** Phone normalization assumes the Brazilian format (2-digit area code + 9 digits). Adaptation needed for other markets.
+
+---
+
+## Roadmap (next 3 to 6 months)
+
+- First scale campaign (1,800+ leads) with real response-rate metrics
+- Official WhatsApp Business API as a premium-plan option, coexisting with WAHA (higher stability, lower ban risk, verified badge)
+- Product landing page and acquisition funnel
+- 5 to 10 paying clients
+- Real-time notification to the operator when a lead replies
+- Integration with webhooks from CRMs and capture platforms (Imoblead as a priority, given the initial real estate focus)
 
 ---
 
 ## Stack
 
 - **Frontend.** Next.js 16, TypeScript, Tailwind CSS, shadcn/ui
-- **Backend.** n8n 2.17.7 (self-hosted em Docker Swarm), Edge Functions (Supabase)
-- **Banco.** PostgreSQL (Supabase) com RLS nativo, 8 tabelas principais, índice único parcial em `(user_id, telefone)` para merge-duplicates
-- **Cache e fila.** Redis 7.4 Alpine
-- **Mensageria.** Evolution API v2 (Baileys), migração pra Zapster planejada
-- **IA.** GPT-4o-mini (OpenAI) para o agente conversacional do Chatwoot pós-resposta
-- **Auth.** Supabase Auth, JWT, RLS por `auth.uid()`
-- **Hosting.** Vercel (frontend), VPS dedicada (n8n, Redis, Evolution API)
+- **Backend.** n8n 2.17.7 (self-hosted on Docker Swarm), Edge Functions (Supabase)
+- **Database.** PostgreSQL (Supabase) with native RLS, 8 main tables, a partial unique index on `(user_id, telefone)` for duplicate merging
+- **Cache and queue.** Redis 7.4 Alpine
+- **Messaging.** WAHA (self-hosted WhatsApp HTTP API); official Business API planned as a premium-plan option
+- **AI.** GPT-4o-mini (OpenAI) for the Chatwoot conversational agent after a reply
+- **Auth.** Supabase Auth, JWT, RLS by `auth.uid()`
+- **Hosting.** Vercel (frontend), dedicated VPS (n8n, Redis, WAHA)
 
 ---
 
-## Sobre
+## About
 
-Construído por [Guilherme Bosco](https://github.com/Guilherme-Bosco), co-founder da [Mind in Shift](https://mindinshift.com.br), agência de automação e IA em Jacareí-SP.
+Built by [Guilherme Bosco](https://github.com/Guilherme-Bosco), co-founder of [Mind in Shift](https://mindinshift.com.br), an automation and AI agency in Jacareí-SP.
 
-Para contato sobre o produto ou consultoria técnica em automação: [contato@mindinshift.com.br](mailto:contato@mindinshift.com.br), [LinkedIn](https://www.linkedin.com/in/guilherme-bosco-dos-santos-012bb620b/).
+For contact about the product or technical consulting on automation: [contato@mindinshift.com.br](mailto:contato@mindinshift.com.br), [LinkedIn](https://www.linkedin.com/in/guilherme-bosco-dos-santos-012bb620b/).
