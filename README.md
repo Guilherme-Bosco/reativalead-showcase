@@ -45,57 +45,60 @@ Whoever doesn't answer enters the follow-up cadence: four touches at day 3, 8, 1
 
 ## Architecture
 
+### The outbound path: from a spreadsheet to a message
+
 ```mermaid
-flowchart TB
-    subgraph client["Surfaces"]
-        Dash["Dashboard<br/>Next.js 16 on Vercel<br/>table · kanban · lead chat"]
-        Lead(["Lead on WhatsApp"])
-    end
+flowchart LR
+    Sheet(["Spreadsheet<br/>csv · xlsx"])
+    WF0["Import<br/>normalize · dedup"]
+    Base[("Lead base<br/>PostgreSQL + RLS")]
+    WF1["Campaign agent<br/>eligibility · plan cap · claim"]
+    FUP["Follow-up<br/>day 3 · 8 · 15 · 22"]
+    Q[("Redis<br/>queue + run config")]
+    WF2["Dispatcher<br/>one lead at a time"]
+    SEND["Humanized send<br/>typing · delays · assembly"]
+    WA["WhatsApp gateway<br/>multi-session"]
+    Lead(["Lead"])
 
-    subgraph orch["Orchestration · n8n self-hosted"]
-        WF0["Import<br/>normalize + dedup"]
-        WF1["Campaign agent<br/>eligibility, caps, claim"]
-        WF2["Dispatcher<br/>drains the queue"]
-        SEND["Humanized send<br/>shared sub-workflow"]
-        FUP["Follow-up<br/>5 schedules · 4 touches"]
-        WF3["Inbound reply<br/>text and media"]
-        WF4["Session monitor<br/>cron 5 min"]
-        LOG["Failure writer<br/>single vocabulary"]
-        ERR["Error handler<br/>last resort"]
-    end
-
-    DB[("Supabase · PostgreSQL<br/>RLS + CHECK + pgvector<br/>leads · messages · results · errors")]
-    Q[("Redis<br/>queue · run config · alert flags")]
-    WA["WAHA<br/>WhatsApp gateway<br/>multi-session"]
-
-    Dash -->|spreadsheet| WF0
-    Dash -->|create / pause / resume| WF1
-    WF0 --> DB
-    WF1 --> DB
-    WF1 -->|queue + run config| Q
-    WF1 -->|trigger| WF2
-    WF2 <--> Q
-    WF2 --> DB
-    WF2 -->|verify, then send| WA
-    FUP -->|eligible leads| DB
-    FUP -->|batch per tenant + session| SEND
-    SEND --> WA
-    SEND --> DB
-    SEND -->|every failure| LOG
-    WA -->|delivery| Lead
-    Lead -->|reply: text, audio, image| WA
-    WA -->|webhook| WF3
-    WF3 --> DB
-    WF4 -->|session health| WA
-    WF4 --> DB
-    WF4 --> Q
-    LOG --> DB
-    ERR --> DB
-    DB --> Dash
+    Sheet --> WF0 --> Base
+    Base --> WF1
+    Base --> FUP
+    WF1 --> Q --> WF2 --> WA --> Lead
+    FUP --> SEND --> WA
 
     classDef store fill:#0f172a,stroke:#334155,color:#e2e8f0
-    class DB,Q store
+    class Base,Q store
 ```
+
+Two engines feed one gateway. Campaigns are operator-initiated and run from a queue; follow-up is time-initiated and runs from the funnel itself, with no queue at all: eligibility is a database question asked every morning. Both write back to the same base, and every dispatch records which session sent it.
+
+### The return path: what comes back, and what we learn from it
+
+```mermaid
+flowchart LR
+    Lead(["Lead replies<br/>text · audio · image"])
+    WA["WhatsApp gateway"]
+    WF3["Inbound reply<br/>classify · store · clear cadence"]
+    DB[("PostgreSQL<br/>messages · stages · results · errors")]
+    Dash["Dashboard<br/>kanban · lead chat · daily queues"]
+    Send["Any send path"]
+    LOG["Failure writer<br/>one vocabulary, no invented causes"]
+    ERR["Error handler<br/>only when a workflow dies"]
+    WF4["Session monitor<br/>cron 5 min"]
+    Admin(["Admin on WhatsApp"])
+
+    Lead --> WA -->|webhook| WF3 --> DB --> Dash
+    Send -->|every failure| LOG --> DB
+    ERR --> DB
+    WF4 -->|health check| WA
+    WF4 --> DB
+    WF4 -->|session down or back up| Admin
+
+    classDef store fill:#0f172a,stroke:#334155,color:#e2e8f0
+    class DB store
+```
+
+A reply is the only event that stops the automation, so the inbound path is the one that must never lose an event: it classifies what arrived (a voice note counts, an emoji reaction does not), stores the message, and clears the cadence date that gates every touch. Everything else in this diagram exists to make failure visible, which is a separate production challenge described below.
 
 ### Layers
 
