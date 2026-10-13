@@ -293,6 +293,6 @@ Stated plainly, because a case study that only lists wins isn't one.
 
 ## About
 
-Built by [Guilherme Bosco](https://github.com/Guilherme-Bosco), co-founder of [Mind in Shift](https://mindinshift.com.br), an automation and AI agency.
+Built by [Guilherme Bosco](https://github.com/Guilherme-Bosco), back-end developer focused on automation and AI agents.
 
-Product or technical-consulting contact: [contato@mindinshift.com.br](mailto:contato@mindinshift.com.br) · [LinkedIn](https://www.linkedin.com/in/guilherme-bosco-dos-santos-012bb620b/)
+Contact: [guilhermebosco23@gmail.com](mailto:guilhermebosco23@gmail.com) · [LinkedIn](https://www.linkedin.com/in/guilherme-bosco-dos-santos-012bb620b/)
